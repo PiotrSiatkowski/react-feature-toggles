@@ -135,4 +135,31 @@ describe('configureFeature()', async assert => {
       expected: 1
     });
   }
+  {
+    const ActiveComponent = createTestComponent('active');
+    const InactiveComponent = createTestComponent('inactive');
+
+    const ConfiguredFeature = configureFeature(
+      InactiveComponent,
+      'game',
+      ActiveComponent
+    );
+
+    const features = [];
+
+    const $ = dom.load(
+      render(
+        <Provider value={features}>
+          <ConfiguredFeature propA="classA" propB="classB" />
+        </Provider>
+      )
+    );
+
+    assert({
+      given: 'the feature is not enabled and props are passed',
+      should: 'render inactive component and pass props to it',
+      actual: $('.classA.classB').length,
+      expected: 1
+    });
+  }
 });

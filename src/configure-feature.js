@@ -1,13 +1,17 @@
 import React from 'react';
 import curry from './curry';
-import { Feature } from './feature';
+import { Consumer } from './context';
 
 export const configureFeature = curry(
   (InactiveComponent, name, ActiveComponent) => props => (
-    <Feature
-      name={name}
-      inactiveComponent={() => <InactiveComponent {...props} />}
-      activeComponent={() => <ActiveComponent {...props} />}
-    />
+    <Consumer>
+      {features =>
+        features.includes(name) ? (
+          <ActiveComponent {...props} />
+        ) : (
+          <InactiveComponent {...props} />
+        )
+      }
+    </Consumer>
   )
 );
